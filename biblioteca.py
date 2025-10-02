@@ -1,6 +1,5 @@
 def carica_da_file(file_path):
     """Carica i libri dal file"""
-    # TODO
     try:
         tabella=[]
         infile = open(file_path, 'r')
@@ -12,48 +11,42 @@ def carica_da_file(file_path):
     except FileNotFoundError:
         print("none")
 
-
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     """Aggiunge un libro nella biblioteca"""
-    # TODO
+
     try:
-        infile = open(file_path, 'a')
-        row=[]
-        row.append(titolo)
-        row.append(autore)
-        row.append(anno)
-        row.append(pagine)
-        row.append(sezione)
-        for i in range(len(row)-1):
-            print(row[i],end=', ', file=infile)
-        print(row[-1], file=infile)
-        infile.close()
-        return(infile)
+        with open(file_path, 'a') as outfile:
+            print(f"{titolo}, {autore}, {anno}, {pagine}, {sezione}", file=outfile)
+            row = [titolo, autore, str(anno), str(pagine), str(sezione)]
+            biblioteca.append(row)
+            return(row)
 
     except FileNotFoundError:
         print("none")
 
-
-
 def cerca_libro(biblioteca, titolo):
     """Cerca un libro nella biblioteca dato il titolo"""
-    # TODO
-    for row in biblioteca:
-        if titolo in row:
-            return(row)
 
+    for row in biblioteca:
+        if row[0].lower()== titolo.lower():
+            return(row)
+    return None
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
     """Ordina i titoli di una data sezione della biblioteca in ordine alfabetico"""
     # TODO
-    tabellla=[]
+    #tabella = [row[0] for row in biblioteca if int(row[-1]) == sezione]
+    #tabella.sort(key=str.lower)
+    #return tabella
+    tabella=[]
     for row in biblioteca:
-        if row[4]==sezione:
-            tabella.append(row)
-    tabella.sort(key=lambda row: row[4])
-
-    return(tabella)
-
+        if int(row[-1]) == sezione:
+           tabella.append(row[0])
+    if tabella==[]:
+        return None
+    else:
+        tabella.sort(key=str.lower)
+        return tabella
 
 def main():
     biblioteca = []
@@ -130,7 +123,6 @@ def main():
             break
         else:
             print("Opzione non valida. Riprova.")
-
 
 if __name__ == "__main__":
     main()
